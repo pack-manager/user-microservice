@@ -1,4 +1,5 @@
 import { Express } from "express"
+import { MongoClient } from "../database/Mongo"
 import { AppMiddleware } from "../middleware/AppMiddleware"
 
 export class AppConfig {
@@ -10,7 +11,8 @@ export class AppConfig {
         this.appMiddleware = new AppMiddleware(app)
     }
 
-    execute() {
+    async execute() {
+        await MongoClient.connect()
         this.appMiddleware.handle()
     }
 }
