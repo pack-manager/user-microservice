@@ -1,0 +1,19 @@
+{
+  "name": "user-microservice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pack-manager/user-microservice.git",
+  "author": "Matheus Evangelista <matheus.evangelista@g.globo>",
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "nodemon --watch 'src/' --exec 'ts-node src/index' -e ts",
+    "start": "node build/index.js",
+    "build": "tsc --project tsconfig.json"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "tsc": "^2.0.4",
+    "typescript": "^4.9.4"
+  }
+}
