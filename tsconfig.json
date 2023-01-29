@@ -11,6 +11,8 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
+    "noImplicitReturns": false,
+
     /* Type Checking */
     "strict": true,
     "skipLibCheck": true

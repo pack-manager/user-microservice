@@ -1,9 +1,11 @@
 import { Router } from "express"
+import { createUserController } from "../../useCases/createUser"
 
 const routes = Router()
 
-routes.get("/", (req, res) => {
-    res.send("hello world")
+routes.post("/users", async (req, res) => {
+    const { body, statusCode } = await createUserController.handle({ body: req.body })
+    res.status(statusCode).send(body)
 })
 
 export default routes
