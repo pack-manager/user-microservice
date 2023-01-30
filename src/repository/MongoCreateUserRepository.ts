@@ -1,20 +1,12 @@
 import { MongoClient } from "../app/database/Mongo";
 import { IUser } from "../domain/model/IUser";
-import { AppError } from "../shared/error/AppError";
+import { AppError, AppErrorFactory } from "../shared/error/AppError";
 import { HttpStatusCode } from "../shared/protocol/HttpStatusCode";
 import { CreateUserParams, ICreateUserRepository } from "./protocol/ICreateUserRepository";
 import { MongoUser } from "./protocol/MongoUser";
 
 export class MongoCreateUserRepository implements ICreateUserRepository {
     async createUser(params: CreateUserParams): Promise<IUser> {
-        const hasUserWithEmail = await MongoClient.db
-            .collection<MongoUser>("users")
-            .findOne({ email: params.email })
-
-        if (hasUserWithEmail) {
-            throw new AppError(HttpStatusCode.CONFLICT, "User already exists")
-        }
-
         const { insertedId } = await MongoClient.db
             .collection("users")
             .insertOne(params)
@@ -24,7 +16,7 @@ export class MongoCreateUserRepository implements ICreateUserRepository {
             .findOne({ _id: insertedId })
 
         if (!user) {
-            throw new AppError(HttpStatusCode.BAD_REQUEST, "User not created")
+            throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "User not created")
         }
 
         const { _id, ...rest } = user

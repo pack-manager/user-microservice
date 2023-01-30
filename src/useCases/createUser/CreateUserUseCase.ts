@@ -1,29 +1,39 @@
 import validator from "validator";
 import { IUser } from "../../domain/model/IUser";
+import { Firebase } from "../../providers/firebase/Firebase";
+import { IFirebaseProvider } from "../../providers/firebase/IFirebaseProvider";
 import { ICreateUserRepository } from "../../repository/protocol/ICreateUserRepository";
-import { AppError } from "../../shared/error/AppError";
+import { AppError, AppErrorFactory } from "../../shared/error/AppError";
+import { handleErrorCatching } from "../../shared/helper/HandleErrorCatching";
 import { HttpStatusCode } from "../../shared/protocol/HttpStatusCode";
 import { IUseCase } from "../../shared/protocol/IUseCase";
 import { ICreateUserRequestDTO } from "./ICreateUserParamsDTO";
 
 export class CreateUserUseCase implements IUseCase {
-    constructor(private repository: ICreateUserRepository) { }
+    constructor(
+        private readonly repository: ICreateUserRepository,
+        private readonly firebaseProvider: IFirebaseProvider = Firebase.shared
+    ) { }
 
-    async execute(data: ICreateUserRequestDTO): Promise<IUser | AppError> {
+    async execute({ name, email, password, isImporter }: ICreateUserRequestDTO): Promise<IUser | AppError> {
         try {
-            const emailIsValid = validator.isEmail(data.email)
+            const emailIsValid = validator.isEmail(email)
 
             if (!emailIsValid) {
-                return new AppError(HttpStatusCode.BAD_REQUEST, "E-mail is invalid")
+                return AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "E-mail is invalid")
             }
 
-            const user = await this.repository.createUser(data)
+            const firebaseResponse = await this.firebaseProvider.registerUserWithEmailAndPassword(email, password)
+
+            if (firebaseResponse instanceof AppError) {
+                return AppErrorFactory.create(firebaseResponse.status, firebaseResponse.message)
+            }
+
+            const user = await this.repository.createUser({ uid: firebaseResponse, name, isImporter })
 
             return user
         } catch (error) {
-            return error instanceof AppError
-                ? new AppError(error.status, error.message)
-                : new AppError(HttpStatusCode.SERVER_ERROR)
+            return handleErrorCatching(error)
         }
     }
 }

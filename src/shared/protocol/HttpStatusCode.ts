@@ -1,7 +1,9 @@
 export enum HttpStatusCode {
     OK = 200,
     CREATED = 201,
-    CONFLICT = 409,
+    UNAUTHORIZED = 401,
     BAD_REQUEST = 400,
+    CONFLICT = 409,
+    UNPROCESSABLE_ENTITY = 422,
     SERVER_ERROR = 500
 }
