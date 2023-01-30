@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpStatusCode } from "../protocol/HttpStatusCode"
 import { IHttpResponse } from "../protocol/IHttpResponse"
 

@@ -1,4 +1,3 @@
-import { IUser } from "../../domain/model/IUser"
 import { Firebase } from "../../providers/firebase/Firebase"
 import { IFirebaseProvider } from "../../providers/firebase/IFirebaseProvider"
 import { IDeleteUserRepository } from "../../repository/protocol/IDeleteUserRepository"

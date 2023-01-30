@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FirebaseApp, initializeApp } from "firebase/app"
 import { getAuth, createUserWithEmailAndPassword, updatePassword, Auth } from "firebase/auth"
 import { AppError, AppErrorFactory } from "../../shared/error/AppError"

@@ -1,6 +1,6 @@
 import { MongoClient } from "../app/database/Mongo";
 import { IUser } from "../domain/model/IUser";
-import { AppError, AppErrorFactory } from "../shared/error/AppError";
+import { AppErrorFactory } from "../shared/error/AppError";
 import { HttpStatusCode } from "../shared/protocol/HttpStatusCode";
 import { CreateUserParams, ICreateUserRepository } from "./protocol/ICreateUserRepository";
 import { MongoUser } from "./protocol/MongoUser";
