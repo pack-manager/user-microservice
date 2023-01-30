@@ -30,7 +30,24 @@ export class Firebase implements IFirebaseProvider {
                 case "auth/email-already-in-use":
                     throw AppErrorFactory.create(HttpStatusCode.CONFLICT, "User already exists")
                 default:
-                    throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "An unexpected error occurred")
+                    throw AppErrorFactory.create(HttpStatusCode.SERVER_ERROR, "An unexpected error occurred")
+            }
+        }
+    }
+
+    async deleteUserByUid(id: string): Promise<void | AppError> {
+        try {
+            await this.auth.currentUser?.delete()
+        } catch (error: any) {
+            switch (error.code) {
+                case "auth/user-not-found":
+                    throw AppErrorFactory.create(HttpStatusCode.NOT_FOUND, "User not found")
+                case 'auth/argument-error':
+                    throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, `Invalid user id provided: ${id}`)
+                case 'auth/internal-error':
+                    throw AppErrorFactory.create(HttpStatusCode.SERVER_ERROR, `Internal error while deleting user with id ${id}: ${error}`)
+                default:
+                    throw AppErrorFactory.create(HttpStatusCode.SERVER_ERROR, `Error deleting user with id ${id}: ${error}`)
             }
         }
     }

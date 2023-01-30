@@ -8,7 +8,7 @@ export const customErrorMessage = (statusCode: HttpStatusCode, message: string):
     }
 }
 
-export const ok = <T>(body: any): IHttpResponse<T> => ({
+export const ok = <T>(body?: any): IHttpResponse<T> => ({
     statusCode: HttpStatusCode.OK,
     body
 })
