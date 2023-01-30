@@ -6,7 +6,7 @@ import { IHttpRequest } from "../../shared/protocol/IHttpRequest";
 import { IHttpResponse } from "../../shared/protocol/IHttpResponse";
 import { IUseCase } from "../../shared/protocol/IUseCase";
 
-export class GetUserUseCaseController implements IController {
+export class GetUserController implements IController {
     constructor(
         private readonly getUserUseCase: IUseCase
     ) { }
