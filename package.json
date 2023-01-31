@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:pack-manager/user-microservice.git",
-  "author": "Matheus Evangelista <matheus.evangelista@g.globo>",
+  "author": "Matheus Evangelista <matheusevangelistadev@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start:dev": "nodemon --watch 'src/' --exec 'ts-node src/index' -e ts",
