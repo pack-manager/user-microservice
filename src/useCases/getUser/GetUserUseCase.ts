@@ -14,7 +14,7 @@ export class GetUserUseCase implements IUseCase {
             const user = this.repository.getUser(data)
             return user
         } catch (error) {
-            return handleErrorCatching(error)
+            throw handleErrorCatching(error)
         }
     }
 }

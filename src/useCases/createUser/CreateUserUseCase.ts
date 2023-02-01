@@ -33,7 +33,7 @@ export class CreateUserUseCase implements IUseCase {
 
             return user
         } catch (error) {
-            return handleErrorCatching(error)
+            throw handleErrorCatching(error)
         }
     }
 }
