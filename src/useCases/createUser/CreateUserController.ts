@@ -21,12 +21,11 @@ export class CreateUserController implements IController {
 
             const response = await this.createUserUseCase.execute(body)
 
-            if (response instanceof AppError) {
-                return customErrorMessage(response.status, response.message)
-            }
-
             return created<IUser>(response)
         } catch (error) {
+            if (error instanceof AppError) {
+                return customErrorMessage(error.status, error.message)
+            }
             return serverError()
         }
     }

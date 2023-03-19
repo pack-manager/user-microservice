@@ -26,7 +26,7 @@ export class CreateUserUseCase implements IUseCase {
             const firebaseResponse = await this.firebaseProvider.registerUserWithEmailAndPassword(email, password)
 
             if (firebaseResponse instanceof AppError) {
-                return AppErrorFactory.create(firebaseResponse.status, firebaseResponse.message)
+                throw AppErrorFactory.create(firebaseResponse.status, firebaseResponse.message)
             }
 
             const user = await this.repository.createUser({ uid: firebaseResponse, name, isImporter })
