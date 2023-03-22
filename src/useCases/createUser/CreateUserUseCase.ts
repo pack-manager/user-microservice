@@ -20,7 +20,7 @@ export class CreateUserUseCase implements IUseCase {
             const emailIsValid = validator.isEmail(email)
 
             if (!emailIsValid) {
-                return AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "E-mail is invalid")
+                throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "E-mail is invalid")
             }
 
             const firebaseResponse = await this.firebaseProvider.registerUserWithEmailAndPassword(email, password)
