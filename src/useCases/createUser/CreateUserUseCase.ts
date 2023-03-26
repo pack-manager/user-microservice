@@ -15,7 +15,8 @@ export class CreateUserUseCase implements IUseCase {
         private readonly firebaseProvider: IFirebaseProvider = Firebase.shared
     ) { }
 
-    async execute({ name, email, password, isImporter }: ICreateUserRequestDTO): Promise<IUser | AppError> {
+    async execute(data: ICreateUserRequestDTO): Promise<IUser | AppError> {
+        const { name, email, password, isImporter } = data
         try {
             const emailIsValid = validator.isEmail(email)
 

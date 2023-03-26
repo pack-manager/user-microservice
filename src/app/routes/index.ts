@@ -7,17 +7,17 @@ const routes = Router()
 
 routes.post("/users", async (req, res) => {
     const { body, statusCode } = await createUserController.handle({ body: req.body })
-    res.status(statusCode).send(body)
+    res.status(statusCode).json(body)
 })
 
 routes.get("/users/:id", async (req, res) => {
     const { body, statusCode } = await getUserController.handle({ params: req.params })
-    res.status(statusCode).send(body)
+    res.status(statusCode).json(body)
 })
 
 routes.delete("/users/:id", async (req, res) => {
     const { body, statusCode } = await deleteUserController.handle({ params: req.params })
-    res.status(statusCode).send(body)
+    res.status(statusCode).json(body)
 })
 
 export default routes
