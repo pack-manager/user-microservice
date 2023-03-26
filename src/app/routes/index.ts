@@ -2,11 +2,17 @@ import { Router } from "express"
 import { createUserController } from "../../useCases/createUser"
 import { deleteUserController } from "../../useCases/deleteUser"
 import { getUserController } from "../../useCases/getUser"
+import { signInController } from "../../useCases/signIn"
 
 const routes = Router()
 
 routes.post("/users", async (req, res) => {
     const { body, statusCode } = await createUserController.handle({ body: req.body })
+    res.status(statusCode).json(body)
+})
+
+routes.post("/users/login", async (req, res) => {
+    const { body, statusCode } = await signInController.handle({ body: req.body })
     res.status(statusCode).json(body)
 })
 

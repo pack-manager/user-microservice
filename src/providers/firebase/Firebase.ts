@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FirebaseApp, initializeApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, updatePassword, Auth } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, updatePassword, Auth, UserCredential, signInWithEmailAndPassword } from "firebase/auth"
 import { AppError, AppErrorFactory } from "../../shared/error/AppError"
 import { config } from "dotenv"
 import { HttpStatusCode } from "../../shared/protocol/HttpStatusCode"
@@ -30,6 +30,25 @@ export class Firebase implements IFirebaseProvider {
                     throw AppErrorFactory.create(HttpStatusCode.UNPROCESSABLE_ENTITY, "Password is not strong enough")
                 case "auth/email-already-in-use":
                     throw AppErrorFactory.create(HttpStatusCode.CONFLICT, "User already exists")
+                default:
+                    throw AppErrorFactory.create(HttpStatusCode.SERVER_ERROR, "An unexpected error occurred")
+            }
+        }
+    }
+
+    async signIn(email: string, password: string): Promise<UserCredential> {
+        try {
+            return await signInWithEmailAndPassword(this.auth, email, password)
+        } catch (error: any) {
+            switch (error.code) {
+                case "auth/invalid-email":
+                    throw AppErrorFactory.create(HttpStatusCode.UNPROCESSABLE_ENTITY, "Email address is invalid")
+                case "auth/user-disabled":
+                    throw AppErrorFactory.create(HttpStatusCode.UNPROCESSABLE_ENTITY, "User corresponding to the given email has been disabled")
+                case "auth/user-not-found":
+                    throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "Incorrect credentials")
+                case "auth/wrong-password":
+                    throw AppErrorFactory.create(HttpStatusCode.UNAUTHORIZED, "Password is invalid for the given email, or the account corresponding to the email does not have a password set")
                 default:
                     throw AppErrorFactory.create(HttpStatusCode.SERVER_ERROR, "An unexpected error occurred")
             }
