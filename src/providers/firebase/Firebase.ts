@@ -36,9 +36,9 @@ export class Firebase implements IFirebaseProvider {
         }
     }
 
-    async signIn(email: string, password: string): Promise<UserCredential> {
+    async signIn(email: string, password: string): Promise<void | AppError> {
         try {
-            return await signInWithEmailAndPassword(this.auth, email, password)
+            await signInWithEmailAndPassword(this.auth, email, password)
         } catch (error: any) {
             switch (error.code) {
                 case "auth/invalid-email":

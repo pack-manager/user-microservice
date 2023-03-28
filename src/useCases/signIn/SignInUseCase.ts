@@ -1,4 +1,3 @@
-import { UserCredential } from "firebase/auth";
 import validator from "validator";
 import { Firebase } from "../../providers/firebase/Firebase";
 import { IFirebaseProvider } from "../../providers/firebase/IFirebaseProvider";
@@ -13,7 +12,7 @@ export class SignInUseCase implements IUseCase {
         private readonly firebaseProvider: IFirebaseProvider = Firebase.shared
     ) { }
 
-    async execute(data: ISignInParamsDTO): Promise<UserCredential | AppError> {
+    async execute(data: ISignInParamsDTO): Promise<void | AppError> {
         const { email, password } = data
         try {
             const emailIsValid = validator.isEmail(email)
@@ -22,7 +21,7 @@ export class SignInUseCase implements IUseCase {
                 throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "E-mail is invalid")
             }
 
-            return await this.firebaseProvider.signIn(email, password)
+            await this.firebaseProvider.signIn(email, password)
         } catch (error) {
             throw handleErrorCatching(error)
         }

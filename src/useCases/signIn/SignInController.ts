@@ -1,6 +1,6 @@
 import { IUser } from "../../domain/model/IUser";
 import { AppError } from "../../shared/error/AppError";
-import { badRequest, created, customErrorMessage, serverError } from "../../shared/error/HttpError";
+import { badRequest, created, customErrorMessage, ok, serverError } from "../../shared/error/HttpError";
 import { IController } from "../../shared/protocol/IController";
 import { IHttpRequest } from "../../shared/protocol/IHttpRequest";
 import { IHttpResponse } from "../../shared/protocol/IHttpResponse";
@@ -21,12 +21,12 @@ export class SignInController implements IController {
 
             const response = await this.signInUseCase.execute(body)
 
-            return created<IUser>(response)
+            return ok<IUser>(response)
         } catch (error) {
             if (error instanceof AppError) {
-                throw customErrorMessage(error.status, error.message)
+                return customErrorMessage(error.status, error.message)
             }
-            throw serverError()
+            return serverError()
         }
     }
 }
