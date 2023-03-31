@@ -19,4 +19,17 @@ export class MongoGetUserRepository implements IGetUserRepository {
         const { _id, ...rest } = user
         return { id: _id.toHexString(), ...rest }
     }
+
+    async getUserUid(uid: string): Promise<IUser> {
+        const user = await MongoClient.db
+            .collection<MongoUser>("users")
+            .findOne({ uid })
+
+        if (!user) {
+            throw AppErrorFactory.create(HttpStatusCode.BAD_REQUEST, "User not found")
+        }
+
+        const { _id, ...rest } = user
+        return { id: _id.toHexString(), ...rest }
+    }
 }

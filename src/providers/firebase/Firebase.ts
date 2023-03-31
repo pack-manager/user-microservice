@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FirebaseApp, initializeApp } from "firebase/app"
-import { getAuth, createUserWithEmailAndPassword, updatePassword, Auth, UserCredential, signInWithEmailAndPassword } from "firebase/auth"
+import { getAuth, createUserWithEmailAndPassword, updatePassword, Auth, signInWithEmailAndPassword } from "firebase/auth"
 import { AppError, AppErrorFactory } from "../../shared/error/AppError"
 import { config } from "dotenv"
 import { HttpStatusCode } from "../../shared/protocol/HttpStatusCode"
@@ -36,9 +36,10 @@ export class Firebase implements IFirebaseProvider {
         }
     }
 
-    async signIn(email: string, password: string): Promise<void | AppError> {
+    async signIn(email: string, password: string): Promise<string> {
         try {
-            await signInWithEmailAndPassword(this.auth, email, password)
+            const response = await signInWithEmailAndPassword(this.auth, email, password)
+            return response.user.uid
         } catch (error: any) {
             switch (error.code) {
                 case "auth/invalid-email":

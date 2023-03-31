@@ -1,6 +1,6 @@
 import { IUser } from "../../domain/model/IUser";
 import { AppError } from "../../shared/error/AppError";
-import { badRequest, created, customErrorMessage, ok, serverError } from "../../shared/error/HttpError";
+import { badRequest, customErrorMessage, ok, serverError } from "../../shared/error/HttpError";
 import { IController } from "../../shared/protocol/IController";
 import { IHttpRequest } from "../../shared/protocol/IHttpRequest";
 import { IHttpResponse } from "../../shared/protocol/IHttpResponse";
